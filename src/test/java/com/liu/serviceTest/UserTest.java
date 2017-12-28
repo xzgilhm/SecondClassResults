@@ -22,8 +22,8 @@ public class UserTest {
 
     @Test
     public void findByName() throws Exception {
-        TUser u = userloginService.findByName("liu");
-        System.out.println(u.getPassword());
+        TUser t = userloginService.findBy("name","liu1");
+        System.out.println(t.getPassword());
     }
 
 }

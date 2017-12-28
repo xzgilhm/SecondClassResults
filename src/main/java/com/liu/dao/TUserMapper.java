@@ -4,5 +4,4 @@ import com.liu.core.Mapper;
 import com.liu.model.TUser;
 
 public interface TUserMapper extends Mapper<TUser> {
-    TUser findByname(String username);
 }

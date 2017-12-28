@@ -31,9 +31,9 @@ public class UserController {
     @ResponseBody
     public String login(TUser userlogin)  {
         System.out.println("---------login.do ------------------");
-        TUser user = tUserService.findByName(userlogin.getName());
+//        TUser user = tUserService.findByName(userlogin.getName());
 
-       System.out.println(user.getPassword());
+//       System.out.println(user.getPassword());
 
         return "-1";
     }

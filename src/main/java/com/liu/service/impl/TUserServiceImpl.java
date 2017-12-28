@@ -20,9 +20,4 @@ public class TUserServiceImpl extends AbstractService<TUser> implements TUserSer
     @Resource
     private TUserMapper tUserMapper;
 
-    @Override
-    public TUser findByName(String username) {
-        TUser tUser = tUserMapper.findByname(username);
-        return tUser;
-    }
 }
