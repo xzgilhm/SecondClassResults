@@ -34,7 +34,14 @@ public class UserController {
 
     //转向学生
     @GetMapping(value = "/student")
-    public String index(@SessionAttribute(WebSecurityConfigurer.SESSION_KEY) String account,Model model){
+    public String student(@SessionAttribute(WebSecurityConfigurer.SESSION_KEY) String account,Model model){
+        model.addAttribute("username",account);
+        return "student/application";
+    }
+
+    //转向test
+    @GetMapping(value = "/test")
+    public String test(@SessionAttribute(WebSecurityConfigurer.SESSION_KEY) String account,Model model){
         model.addAttribute("username",account);
         return "student/application";
     }
