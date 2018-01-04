@@ -1,5 +1,6 @@
 package com.liu.serviceTest;
 
+import com.liu.Tester;
 import com.liu.model.TRole;
 import com.liu.model.TUser;
 import com.liu.service.TRoleService;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by 73559 on 2017/12/27.
  */
-public class RoleTest {
+public class RoleTest extends Tester {
     @Autowired
     TRoleService trs;
 
