@@ -23,7 +23,14 @@ public class NodeTest extends Tester {
     @Autowired
     CustomService customService;
 
-
+    @Test
+    public void muduleAll(){
+        String moduleId = "01";
+        List<CustomModel> tn = customService.findByModuleId(moduleId);
+        Result r = new Result();
+        r.setData(tn);
+        System.out.println(r.toString());
+    }
 
     @Test
     public void findByModuleId(){
@@ -31,14 +38,14 @@ public class NodeTest extends Tester {
         List<CustomModel> tn = customService.findByModuleId(moduleId);
         TypeArray tempType = new TypeArray();
         int typeCount = 0;
-        int standardCount = 0;
         List<TypeArray> typeArray = new ArrayList<TypeArray>();
 
         for (int i = 0; i < tn.size() ; i++) {
             if(typeArray.isEmpty()){
-                StandardArray sa = new StandardArray();
                 tempType.setTypeId(tn.get(0).getTypeid());
                 tempType.setTypeName(tn.get(0).getTypename());
+                tempType.setEvidenceid(tn.get(0).getEvidenceid());
+                tempType.setEvidenceTitle(tn.get(0).getEvidenceTitle());
                 typeArray.add(tempType);
             }
 
@@ -51,6 +58,8 @@ public class NodeTest extends Tester {
                 TypeArray temp = new TypeArray();
                 temp.setTypeId(tn.get(i).getTypeid());
                 temp.setTypeName(tn.get(i).getTypename());
+                temp.setEvidenceid(tn.get(i).getEvidenceid());
+                temp.setEvidenceTitle(tn.get(i).getEvidenceTitle());
                 typeArray.add(temp);
             }
         }

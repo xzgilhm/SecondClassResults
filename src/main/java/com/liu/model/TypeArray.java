@@ -7,16 +7,9 @@ import java.util.List;
  */
 public class TypeArray {
     private String typeId;
-    private String typeName =" xx ";
-    private List<StandardArray> standardArrays;
-
-    public List<StandardArray> getStandardArrays() {
-        return standardArrays;
-    }
-
-    public void setStandardArrays(List<StandardArray> standardArrays) {
-        this.standardArrays = standardArrays;
-    }
+    private String typeName;
+    private Integer evidenceid;
+    private String evidenceTitle;
 
     public String getTypeId() {
         return typeId;
@@ -32,6 +25,22 @@ public class TypeArray {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public Integer getEvidenceid() {
+        return evidenceid;
+    }
+
+    public void setEvidenceid(Integer evidenceid) {
+        this.evidenceid = evidenceid;
+    }
+
+    public String getEvidenceTitle() {
+        return evidenceTitle;
+    }
+
+    public void setEvidenceTitle(String evidenceTitle) {
+        this.evidenceTitle = evidenceTitle;
     }
 
     @Override
