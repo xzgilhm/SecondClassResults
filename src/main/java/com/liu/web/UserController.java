@@ -32,24 +32,13 @@ public class UserController {
         return "login";
     }
 
-    //转向学生
-    @GetMapping(value = "/student")
-    public String student(@SessionAttribute(WebSecurityConfigurer.SESSION_KEY) String account,Model model){
-        model.addAttribute("username",account);
-        return "student/application";
-    }
 
-    //转向test
-    @GetMapping(value = "/test")
-    public String test(@SessionAttribute(WebSecurityConfigurer.SESSION_KEY) String account,Model model){
-        model.addAttribute("username",account);
-        return "student/application";
-    }
+
 
     //登陆,并记录session
     @PostMapping(value = "/login")
     @ResponseBody
-    public Result login(TUser userlogin, HttpSession session)  {
+    public Result login(@RequestBody TUser userlogin, HttpSession session)  {
         System.out.println("---------login.do ------------------");
 
         try{
@@ -73,5 +62,13 @@ public class UserController {
     public String logout(HttpSession session) {
         session.removeAttribute(WebSecurityConfigurer.SESSION_KEY);
         return "redirect:/login";
+    }
+
+
+    //转向学生
+    @GetMapping(value = "/student")
+    public String student(@SessionAttribute(WebSecurityConfigurer.SESSION_KEY) String account,Model model){
+        model.addAttribute("username",account);
+        return "student/application";
     }
 }
