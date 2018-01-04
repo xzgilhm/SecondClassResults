@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liu.dao.CustomMapper">
+    <resultMap id="BaseResultMap" type="com.liu.model.CustomModel">
+
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="moduleid" jdbcType="CHAR" property="moduleid" />
+        <result column="typeid" jdbcType="CHAR" property="typeid" />
+        <result column="standardid" jdbcType="INTEGER" property="standardid" />
+        <result column="creditid" jdbcType="INTEGER" property="creditid" />
+        <result column="evidenceid" jdbcType="INTEGER" property="evidenceid" />
+        <result column="typename" jdbcType="VARCHAR" property="typename"/>
+        <result column="title" jdbcType="VARCHAR" property="evidenceTitle" />
+        <result column="title1" jdbcType="VARCHAR" property="standardTitle" />
+    </resultMap>
+
+
+    <resultMap id="StandardResultMap" type="com.liu.model.StandardWithCredit">
+        <id column="standardid" jdbcType="INTEGER" property="id" />
+        <result column="creditid" jdbcType="INTEGER" property="creditid" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+    </resultMap>
+    
+    <select id="findByModuleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT node.*,type.typename,evidence.title,standard.title FROM t_node node,t_type type,t_evidence evidence,t_standard standard
+WHERE node.typeid = type.id AND node.evidenceid = evidence.id AND node.standardid = standard.id AND moduleid = #{moduleId,jdbcType=VARCHAR};
+
+    </select>
+
+    <select id="findStardByMuduleIdAndTypeId" resultMap="StandardResultMap">
+        SELECT node.creditid,node.standardid,standard.title FROM t_node node,t_standard standard
+WHERE node.typeid = #{arg1,jdbcType=VARCHAR} AND node.standardid = standard.id AND node.moduleid = #{arg0,jdbcType=VARCHAR};
+
+    </select>
+</mapper>
