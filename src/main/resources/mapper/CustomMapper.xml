@@ -20,7 +20,8 @@
         <result column="creditid" jdbcType="INTEGER" property="creditid" />
         <result column="title" jdbcType="VARCHAR" property="title" />
     </resultMap>
-    
+
+
     <select id="findByModuleId" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT node.*,type.typename,evidence.title,standard.title FROM t_node node,t_type type,t_evidence evidence,t_standard standard
 WHERE node.typeid = type.id AND node.evidenceid = evidence.id AND node.standardid = standard.id AND moduleid = #{moduleId,jdbcType=VARCHAR};
@@ -32,4 +33,6 @@ WHERE node.typeid = type.id AND node.evidenceid = evidence.id AND node.standardi
 WHERE node.typeid = #{arg1,jdbcType=VARCHAR} AND node.standardid = standard.id AND node.moduleid = #{arg0,jdbcType=VARCHAR};
 
     </select>
+    
+
 </mapper>

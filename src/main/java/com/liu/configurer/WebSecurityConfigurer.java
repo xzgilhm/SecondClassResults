@@ -33,10 +33,8 @@ public class WebSecurityConfigurer extends WebMvcConfigurerAdapter {
         // 排除配置
         addInterceptor.excludePathPatterns("/error");
         addInterceptor.excludePathPatterns("/login");
-        addInterceptor.excludePathPatterns("/node/getAllModuleName");
-        addInterceptor.excludePathPatterns("/node/findTypeByModule");
-        addInterceptor.excludePathPatterns("/node/findStardByMuduleIdAndTypeId");
         addInterceptor.excludePathPatterns("/node/**");
+        addInterceptor.excludePathPatterns("/userSubmit/**");
         // 拦截配置
         addInterceptor.addPathPatterns("/**");
     }

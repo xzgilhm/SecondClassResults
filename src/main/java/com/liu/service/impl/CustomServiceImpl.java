@@ -3,7 +3,6 @@ package com.liu.service.impl;
 import com.liu.dao.CustomMapper;
 import com.liu.model.CustomModel;
 import com.liu.model.StandardWithCredit;
-import com.liu.model.TStandard;
 import com.liu.service.CustomService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,4 +26,6 @@ public class CustomServiceImpl implements CustomService{
     public List<StandardWithCredit> findStardByMuduleIdAndTypeId(String moduleId, String typeId) {
         return customMapper.findStardByMuduleIdAndTypeId(moduleId,typeId);
     }
+
+
 }

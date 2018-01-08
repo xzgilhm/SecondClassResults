@@ -5,12 +5,21 @@ import com.liu.core.ResultGenerator;
 import com.liu.model.*;
 import com.liu.service.CustomService;
 import com.liu.service.TModuleService;
+import com.liu.service.TUserService;
+import com.liu.service.TUserSubmitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 73559 on 2018/1/4.
@@ -23,8 +32,10 @@ public class NodeController {
     @Resource
     private TModuleService tModuleService;
 
-    @Autowired
+    @Resource
     CustomService customService;
+
+
     //获得所有module的name
     @GetMapping("/getAllModuleName")
     public Result getAllModuleName(){
@@ -80,4 +91,6 @@ public class NodeController {
         List<StandardWithCredit> ts = customService.findStardByMuduleIdAndTypeId(moduleId,typeId);
         return ResultGenerator.genSuccessResult(ts);
     }
+
+
 }
