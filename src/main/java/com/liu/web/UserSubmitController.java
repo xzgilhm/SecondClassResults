@@ -1,5 +1,6 @@
 package com.liu.web;
 
+import com.liu.core.FileWithByte;
 import com.liu.core.Result;
 import com.liu.core.ResultGenerator;
 import com.liu.model.TUserSubmit;
@@ -7,6 +8,7 @@ import com.liu.service.TUserSubmitService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -115,4 +117,16 @@ public class UserSubmitController {
         }
 
     }
+
+    @GetMapping("/editUserInfo/{userId}")
+    public Result findSubmitUserInfo(@PathVariable("userId") String userId){
+        System.out.println("userSubmit/editUserInfo: => userId="+userId);
+        Condition condition = new Condition(TUserSubmit.class);
+        condition.createCriteria().andCondition("userid = " +userId);
+        List<TUserSubmit> tUserSubmits = tUserSubmitService.findByCondition(condition);
+//        FileWithByte fwb = new FileWithByte();
+//        fwb.getFile(tUserSubmits.get(0).getFile(),"D:/","1.jpg");
+        return ResultGenerator.genSuccessResult(tUserSubmits);
+    }
+
 }

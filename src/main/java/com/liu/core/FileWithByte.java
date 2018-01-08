@@ -1,36 +1,12 @@
-package com.liu.webTest;
-
-import com.liu.Tester;
-import com.liu.core.Result;
-import com.liu.model.TUser;
-import com.liu.model.TUserSubmit;
-import com.liu.service.CustomService;
-import com.liu.service.TUserService;
-import com.liu.service.TUserSubmitService;
-import org.apache.ibatis.session.SqlSession;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
+package com.liu.core;
 
 import java.io.*;
 
-
-public class uploadTest extends Tester {
-    @Autowired
-    private TUserSubmitService tUserSubmitService;
-
-
-    @Autowired
-    private TUserService tUserService;
-
-    @Autowired
-    private CustomService customService;
-
+public class FileWithByte {
     /**
-     * 获得指定文件的byte数组
+     * 根据文件，生成byte[]
      */
-
-    private  byte[] getBytes(String filePath){
+    public  byte[] getBytes(String filePath){
         byte[] buffer = null;
         try {
             File file = new File(filePath);
@@ -88,34 +64,4 @@ public class uploadTest extends Tester {
             }
         }
     }
-
-    @Test
-    @Rollback(false)
-    public void add(){
-        TUserSubmit tUserSubmit = new TUserSubmit();
-        uploadTest ut = new uploadTest();
-        byte[] b = ut.getBytes("C:/Users/73559/Pictures/StudyPicture/jstraining-master/packagejson.jpg");
-        tUserSubmit.setFile(b);
-        tUserSubmit.setUserid(2);
-        tUserSubmit.setRoleid(2);
-        tUserSubmit.setModuleid("01");
-        tUserSubmit.setTypeid("0101");
-        tUserSubmit.setStandardid(2);
-        tUserSubmit.setCreditid(2);
-        tUserSubmit.setEvidenceid(2);
-        Result r = new Result();
-        r.setData(tUserSubmit);
-        System.out.println(r.toString());
-        tUserSubmitService.save(tUserSubmit);
-    }
-
-
-    @Test
-    public void findSubmit(){
-        TUserSubmit tUserSubmit = new TUserSubmit();
-        tUserSubmit = tUserSubmitService.findById(3);
-        getFile(tUserSubmit.getFile(),"D:/","1.jpg");
-
-    }
-
 }
