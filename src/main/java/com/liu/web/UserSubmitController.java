@@ -3,7 +3,9 @@ package com.liu.web;
 import com.liu.core.FileWithByte;
 import com.liu.core.Result;
 import com.liu.core.ResultGenerator;
+import com.liu.model.TModule;
 import com.liu.model.TUserSubmit;
+import com.liu.service.CustomService;
 import com.liu.service.TUserSubmitService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,37 +29,12 @@ public class UserSubmitController {
     @Resource
     private TUserSubmitService tUserSubmitService;
 
+    @Resource
+    private CustomService customService;
+
     //用于存放学生申请的信息
     HashMap<String, TUserSubmit> map = new HashMap<>();
     String mark = "";
-
-    //上传文件
-    @PostMapping("/onlyUpload")
-    public String onlyUpload(@RequestParam("file") MultipartFile file) {
-        System.out.println("------upload---------");
-        System.out.println(file.getOriginalFilename());
-        if (!file.isEmpty()) {
-            try {
-                // 这里只是简单例子，文件直接输出到项目路径下。
-                // 实际项目中，文件需要输出到指定位置，需要在增加代码处理。
-                // 还有关于文件格式限制、文件大小限制，详见：中配置。
-                BufferedOutputStream out = new BufferedOutputStream(
-                        new FileOutputStream(new File(file.getOriginalFilename())));
-                out.write(file.getBytes());
-                out.flush();
-                out.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return "上传失败," + e.getMessage();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "上传失败," + e.getMessage();
-            }
-            return "上传成功";
-        } else {
-            return "上传失败，因为文件是空的.";
-        }
-    }
 
 
     //在学生申请界面中点击上传文件后的响应
@@ -100,13 +77,13 @@ public class UserSubmitController {
     }
 
 
+    //点击submit后的响应
     @GetMapping("/submit")
     public Result submit(){
         List<TUserSubmit> tUserSubmits = new ArrayList<>();
         for(Map.Entry<String,TUserSubmit> entry : map.entrySet() ){
             tUserSubmits.add(entry.getValue());
         }
-
         try{
             //清空map
             map.clear();
@@ -118,15 +95,38 @@ public class UserSubmitController {
 
     }
 
+    //点击修改后的操作
+    @GetMapping("/edit/update")
+    public Result update(){
+        try {
+            for(Map.Entry<String,TUserSubmit> entry : map.entrySet() ){
+                Result r = new Result();
+                r.setData(entry.getValue());
+                System.out.println(r.toString());
+                tUserSubmitService.update(entry.getValue());
+            }
+            map.clear();
+            return ResultGenerator.genSuccessResult("提交成功");
+        }catch (Exception e){
+            return ResultGenerator.genFailResult("提交失败");
+        }
+
+    }
+    //查看user的提交
     @GetMapping("/editUserInfo/{userId}")
     public Result findSubmitUserInfo(@PathVariable("userId") String userId){
         System.out.println("userSubmit/editUserInfo: => userId="+userId);
         Condition condition = new Condition(TUserSubmit.class);
         condition.createCriteria().andCondition("userid = " +userId);
         List<TUserSubmit> tUserSubmits = tUserSubmitService.findByCondition(condition);
-//        FileWithByte fwb = new FileWithByte();
-//        fwb.getFile(tUserSubmits.get(0).getFile(),"D:/","1.jpg");
         return ResultGenerator.genSuccessResult(tUserSubmits);
     }
 
+    //查看user的提交中的module
+    @GetMapping("/edit/findModule/{userId}")
+    public Result findMoudle(@PathVariable("userId") String userId){
+        System.out.println("/edit/findModule/: => userId="+userId);
+        List<TModule> tModules = customService.findSubmitModuleByUserId(userId);
+        return ResultGenerator.genSuccessResult(tModules);
+    }
 }

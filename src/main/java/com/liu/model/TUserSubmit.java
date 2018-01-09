@@ -1,5 +1,7 @@
 package com.liu.model;
 
+import com.liu.core.FileWithByte;
+
 import javax.persistence.*;
 
 @Table(name = "t_user_submit")
@@ -41,6 +43,21 @@ public class TUserSubmit {
      * 证明所需的相关资料
      */
     private byte[] file;
+
+    @Transient
+    private String fileName;
+
+    public String getFileName() {
+        FileWithByte fwb = new FileWithByte();
+        String path = System.getProperty("user.dir")+"/src/main/resources/static/images";
+        String name = this.getUserid()+this.getModuleid()+this.getTypeid()+".jpg";
+        fwb.getFile(this.getFile(),path,name);
+        return name;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
 
     /**

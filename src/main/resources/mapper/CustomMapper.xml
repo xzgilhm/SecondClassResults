@@ -21,12 +21,20 @@
         <result column="title" jdbcType="VARCHAR" property="title" />
     </resultMap>
 
+    <resultMap id="ModuleResultMap" type="com.liu.model.TModule">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="CHAR" property="id" />
+        <result column="modulename" jdbcType="VARCHAR" property="modulename" />
+    </resultMap>
 
     <select id="findByModuleId" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT node.*,type.typename,evidence.title,standard.title FROM t_node node,t_type type,t_evidence evidence,t_standard standard
 WHERE node.typeid = type.id AND node.evidenceid = evidence.id AND node.standardid = standard.id AND moduleid = #{moduleId,jdbcType=VARCHAR};
 
     </select>
+    
 
     <select id="findStardByMuduleIdAndTypeId" resultMap="StandardResultMap">
         SELECT node.creditid,node.standardid,standard.title FROM t_node node,t_standard standard
@@ -34,5 +42,9 @@ WHERE node.typeid = #{arg1,jdbcType=VARCHAR} AND node.standardid = standard.id A
 
     </select>
     
+    
+    <select id="findSubmitModuleByUserId" resultMap="ModuleResultMap" parameterType="java.lang.String">
+     SELECT DISTINCT module.* FROM t_user_submit submit,t_module module WHERE userid = #{userId,jdbcType=VARCHAR} AND module.id = submit.moduleid;
+    </select>
 
 </mapper>

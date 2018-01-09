@@ -1,9 +1,6 @@
 package com.liu.dao;
 
-import com.liu.model.CustomModel;
-import com.liu.model.StandardWithCredit;
-import com.liu.model.TStandard;
-import com.liu.model.TUserSubmit;
+import com.liu.model.*;
 
 import java.util.List;
 
@@ -14,5 +11,7 @@ public interface CustomMapper {
     List<CustomModel> findByModuleId(String moduleId);
 
     List<StandardWithCredit> findStardByMuduleIdAndTypeId(String moduleId, String typeId);
+
+    List<TModule> findSubmitModuleByUserId(String userId);
 
 }

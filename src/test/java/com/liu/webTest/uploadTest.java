@@ -118,4 +118,14 @@ public class uploadTest extends Tester {
 
     }
 
+
+
+
+    @Test
+    public void directory(){
+
+        System.out.println(System.getProperty("user.dir"));
+    }
+
+
 }
