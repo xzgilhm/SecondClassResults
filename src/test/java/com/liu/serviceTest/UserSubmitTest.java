@@ -12,6 +12,8 @@ import com.liu.service.TUserSubmitService;
 import org.junit.Test;
 
 
+import org.springframework.test.annotation.Rollback;
+import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Condition;
 import javax.annotation.Resource;
 import java.util.List;
@@ -46,12 +48,15 @@ public class UserSubmitTest extends Tester {
     }
 
     @Test
+    @Rollback(false)
     public void updateSubmit(){
+        Condition condition = new Condition(TUserSubmit.class);
+        condition.createCriteria().andCondition("userid=5 AND moduleid='01' AND typeid='0101'");
         int userId=Integer.parseInt("5");
         int roleId=Integer.parseInt("5");
         String moduleId="01";
         String typeId="0101";
-        int standardId=Integer.parseInt("7");
+        int standardId=Integer.parseInt("19");
         int creditId=Integer.parseInt("6");
         int evidenceId=Integer.parseInt("1");
         TUserSubmit tUserSubmit = new TUserSubmit();
@@ -62,6 +67,6 @@ public class UserSubmitTest extends Tester {
         tUserSubmit.setStandardid(standardId);
         tUserSubmit.setCreditid(creditId);
         tUserSubmit.setEvidenceid(evidenceId);
-        tUserSubmitService.update(tUserSubmit);
+        tUserSubmitService. updateByCondition(condition,tUserSubmit);
     }
 }

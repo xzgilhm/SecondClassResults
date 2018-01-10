@@ -100,17 +100,17 @@ public class UserSubmitController {
     public Result update(){
         try {
             for(Map.Entry<String,TUserSubmit> entry : map.entrySet() ){
-                Result r = new Result();
-                r.setData(entry.getValue());
-                System.out.println(r.toString());
-                tUserSubmitService.update(entry.getValue());
+                TUserSubmit tus = entry.getValue();
+                String sql = "userid="+tus.getUserid()+" AND moduleid="+ tus.getModuleid() +" AND typeid="+tus.getTypeid();
+                Condition condition = new Condition(TUserSubmit.class);
+                condition.createCriteria().andCondition(sql);
+                tUserSubmitService.updateByCondition(condition,tus);
             }
             map.clear();
             return ResultGenerator.genSuccessResult("提交成功");
         }catch (Exception e){
             return ResultGenerator.genFailResult("提交失败");
         }
-
     }
     //查看user的提交
     @GetMapping("/editUserInfo/{userId}")
