@@ -4,7 +4,7 @@ import com.liu.core.Service;
 
 
 /**
- * Created by sliu on 2018/01/08.
+ * Created by sliu on 2018/01/10.
  */
 public interface TUserSubmitService extends Service<TUserSubmit> {
 

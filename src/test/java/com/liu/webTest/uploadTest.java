@@ -95,7 +95,7 @@ public class uploadTest extends Tester {
         TUserSubmit tUserSubmit = new TUserSubmit();
         uploadTest ut = new uploadTest();
         byte[] b = ut.getBytes("C:/Users/73559/Pictures/StudyPicture/jstraining-master/packagejson.jpg");
-        tUserSubmit.setFile(b);
+//        tUserSubmit.setFile(b);
         tUserSubmit.setUserid(2);
         tUserSubmit.setRoleid(2);
         tUserSubmit.setModuleid("01");
@@ -114,7 +114,7 @@ public class uploadTest extends Tester {
     public void findSubmit(){
         TUserSubmit tUserSubmit = new TUserSubmit();
         tUserSubmit = tUserSubmitService.findById(3);
-        getFile(tUserSubmit.getFile(),"D:/","1.jpg");
+//        getFile(tUserSubmit.getFile(),"D:/","1.jpg");
 
     }
 
