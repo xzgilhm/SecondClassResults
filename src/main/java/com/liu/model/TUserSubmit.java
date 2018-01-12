@@ -1,6 +1,13 @@
 package com.liu.model;
 
+import com.liu.core.FileWithByte;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
+import java.io.IOException;
+import java.util.List;
+
+import static com.liu.core.ProjectConstant.STATIC_RESOURCE;
 
 @Table(name = "t_user_submit")
 public class TUserSubmit {
@@ -52,6 +59,34 @@ public class TUserSubmit {
 
     public void setFileByte(byte[] fileByte) {
         this.fileByte = fileByte;
+    }
+
+    /**
+     * 把files的路径存入数据库,把files写到 路径下
+     * @param files
+     */
+    @Transient
+    String NAMEINSQL = "";
+
+    public void setFileByte(List<MultipartFile> files,String fileNameTop,int userId) throws IOException {
+        FileWithByte fwb = new FileWithByte();
+        for(int i=0;i<files.size();i++) {
+            String filePath = System.getProperty("user.dir") + STATIC_RESOURCE + "/" + userId;
+            String fileName = fileNameTop +"&&" + files.get(i).getOriginalFilename() ;
+            fwb.getFile(files.get(i).getBytes(),filePath,fileName);
+            NAMEINSQL += fileName + "####";
+
+        }
+        System.out.println("name in sql");
+        System.out.println(NAMEINSQL);
+        this.file = NAMEINSQL;
+    }
+
+    public void deleteName(String mark,String fileName){
+        NAMEINSQL = NAMEINSQL.replace(mark + "&&"+ fileName + "####","");
+        System.out.println("deleteName():  name in sql");
+        System.out.println(NAMEINSQL);
+        this.file = NAMEINSQL;
     }
     /**
      * @return id
