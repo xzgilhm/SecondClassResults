@@ -65,8 +65,8 @@ public class TUserSubmit {
      * 把files的路径存入数据库,把files写到 路径下
      * @param files
      */
-    @Transient
-    String NAMEINSQL = "";
+//    @Transient
+//    String NAMEINSQL = "";
 
     public void setFileByte(List<MultipartFile> files,String fileNameTop,int userId) throws IOException {
         FileWithByte fwb = new FileWithByte();
@@ -74,19 +74,18 @@ public class TUserSubmit {
             String filePath = System.getProperty("user.dir") + STATIC_RESOURCE + "/" + userId;
             String fileName = fileNameTop +"&&" + files.get(i).getOriginalFilename() ;
             fwb.getFile(files.get(i).getBytes(),filePath,fileName);
-            NAMEINSQL += fileName + "####";
-
+            this.file += fileName + "####";
         }
         System.out.println("name in sql");
-        System.out.println(NAMEINSQL);
-        this.file = NAMEINSQL;
+        System.out.println(this.file);
+//        this.file = NAMEINSQL;
     }
 
     public void deleteName(String mark,String fileName){
-        NAMEINSQL = NAMEINSQL.replace(mark + "&&"+ fileName + "####","");
+        this.file = this.file.replace(mark + "&&"+ fileName + "####","");
         System.out.println("deleteName():  name in sql");
-        System.out.println(NAMEINSQL);
-        this.file = NAMEINSQL;
+        System.out.println(this.file);
+//        this.file = NAMEINSQL;
     }
     /**
      * @return id

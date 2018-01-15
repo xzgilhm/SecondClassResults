@@ -36,8 +36,13 @@ public class UserSubmitController {
     private CustomService customService;
     //用于存放学生申请的信息
     HashMap<String, TUserSubmit> map = new HashMap<>();
-    String MARK = "";
+    ArrayList<String> deleteFileList  = new ArrayList<>();
 
+    /**
+     * 刷新页面时的操作
+     * 1.将已经写入磁盘的文件删除
+     * 2.将所维护的map和deleteFileList清空
+     */
     @GetMapping("/clearMap")
     public void clearMap(){
         String userId = "";
@@ -46,24 +51,28 @@ public class UserSubmitController {
             for(TUserSubmit tus : map.values()){
                 userId = tus.getUserid().toString();
                 System.out.println("cleatMap: " + tus.getFile());
-                String[] tempStr = tus.getFile().split("####");
-                for(int i=0;i<tempStr.length;i++){
-                    files.add(tempStr[i]);
-                    System.out.println("clearMap2 " + tempStr[i]);
+                if(tus.getFile() != null){
+                    String[] tempStr = tus.getFile().split("####");
+                    for(int i=0;i<tempStr.length;i++){
+                        files.add(tempStr[i]);
+                        System.out.println("clearMap2 " + tempStr[i]);
+                    }
                 }
+
             }
             DeleteFiles dfs = new DeleteFiles();
             String filePath = System.getProperty("user.dir") + STATIC_RESOURCE + "/" + userId;
             dfs.deleteFilesInMap(files,filePath);
-            System.out.println(filePath);
         }
 
-
+        this.deleteFileList.clear();
         this.map.clear();
     }
+
     /**
-     *点击上传的响应
-     *第一次点击和之后的点击都在维护map
+     * 点击上传的响应
+     * 取到文件的所有信息,将其写入map中
+     * 并且此时已经将文件写到磁盘中了
      */
     @PostMapping("/upload")
     public String fileUpload(HttpServletRequest request) throws IOException {
@@ -102,23 +111,7 @@ public class UserSubmitController {
 
     }
 
-//    @PostMapping("changeSelect")
-//    public String changeSelect(@RequestBody TUserSubmit tUserSubmit){
-//        if(tUserSubmit.getFile().equals("")){
-//            tUserSubmit.setFile("");
-//            System.out.println("changeSelect" + tUserSubmit.getFile());
-//        }
-//        else{
-//            tUserSubmit.setFile(System.getProperty("user.dir")+"/src/main/resources/static/images/" + tUserSubmit.getFile());
-//        }
-//        Result r = new Result();
-//        r.setData(tUserSubmit);
-//        System.out.println(r.toString());
-//        MARK = tUserSubmit.getUserid() + "+" + tUserSubmit.getModuleid() + "+" + tUserSubmit.getTypeid();
-//        System.out.println(MARK);
-////        map.put(MARK,tUserSubmit);
-//        return "xx";
-//    }
+
 
     /**
      *改变选择栏的值
@@ -143,14 +136,7 @@ public class UserSubmitController {
     public String changeFileList(@RequestBody CustomMarkModel cmm) {
         String mark = cmm.getMark();
         String fileName = cmm.getFileName();
-        System.out.println(mark + "\n" + fileName);
-
-        String filePath = System.getProperty("user.dir") + STATIC_RESOURCE + "/" + map.get(mark).getUserid();
-        System.out.println(filePath);
-        DeleteFiles dfs = new DeleteFiles();
-        ArrayList<String>  strArray = new ArrayList<String> ();
-        strArray.add(mark + "&&" + fileName);
-        dfs.deleteFilesInMap(strArray,filePath);
+        deleteFileList.add(mark + "&&" + fileName);
         map.get(mark).deleteName(mark,fileName);
         return "yy";
     }
@@ -158,13 +144,18 @@ public class UserSubmitController {
     @GetMapping("/submit")
     public Result submit(){
         try{
+            Integer userId = -1;
             for(Map.Entry<String,TUserSubmit> entry : map.entrySet() ){
                 TUserSubmit tus = entry.getValue();
-                Result r = new Result();
-                r.setData(entry.getValue());
-                System.out.println(r.toString());
+                userId = tus.getUserid();
                 tUserSubmitService.save(tus);
             }
+            //删除文件
+            String filePath = System.getProperty("user.dir") + STATIC_RESOURCE + "/" + userId.toString();
+            System.out.println(filePath);
+            DeleteFiles dfs = new DeleteFiles();
+            dfs.deleteFilesInMap(deleteFileList,filePath);
+            deleteFileList.clear();
             map.clear();
             return ResultGenerator.genSuccessResult("提交成功");
         }catch (Exception e){
@@ -173,51 +164,4 @@ public class UserSubmitController {
         }
     }
 
-    //点击修改后的操作
-    @GetMapping("/edit/update")
-    public Result update(){
-//        FileWithByte fwb = new FileWithByte();
-//        String filePath = System.getProperty("user.dir")+"/src/main/resources/static/images";
-//        try {
-//            for(Map.Entry<String,List<TUserSubmit>> entry : map.entrySet() ){
-//                List<TUserSubmit> tus = entry.getValue();
-//                System.out.println("------/edit/update-----");
-//                FileWithByte fwb = new FileWithByte();
-//                String filePath = System.getProperty("user.dir")+"/src/main/resources/static/images";
-//                String fileName = tus.getUserid() + tus.getModuleid() + tus.getTypeid() + ".jpg";
-//                if(tus.getFileByte() != null){
-//                    fwb.getFile(tus.getFileByte(),filePath,fileName);
-//                }
-//                tus.setFile(filePath+"/" +fileName);
-//                Result r = new Result();
-//                r.setData(tus);
-//                System.out.println(r.toString());
-//                String sql = "userid="+tus.getUserid()+" AND moduleid="+ tus.getModuleid() +" AND typeid="+tus.getTypeid();
-//                Condition condition = new Condition(TUserSubmit.class);
-//                condition.createCriteria().andCondition(sql);
-//                tUserSubmitService.updateByCondition(condition,tus);
-//            }
-//            map.clear();
-            return ResultGenerator.genSuccessResult("提交成功");
-//        }catch (Exception e){
-//            return ResultGenerator.genFailResult("提交失败");
-//        }
-    }
-    //查看user的提交
-    @GetMapping("/editUserInfo/{userId}")
-    public Result findSubmitUserInfo(@PathVariable("userId") String userId){
-        System.out.println("userSubmit/editUserInfo: => userId="+userId);
-        Condition condition = new Condition(TUserSubmit.class);
-        condition.createCriteria().andCondition("userid = " +userId);
-        List<TUserSubmit> tUserSubmits = tUserSubmitService.findByCondition(condition);
-        return ResultGenerator.genSuccessResult(tUserSubmits);
-    }
-
-    //查看user的提交中的module
-    @GetMapping("/edit/findModule/{userId}")
-    public Result findMoudle(@PathVariable("userId") String userId){
-        System.out.println("/edit/findModule/: => userId="+userId);
-        List<TModule> tModules = customService.findSubmitModuleByUserId(userId);
-        return ResultGenerator.genSuccessResult(tModules);
-    }
 }
