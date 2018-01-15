@@ -5,7 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.liu.core.ProjectConstant.STATIC_RESOURCE;
 
@@ -51,42 +53,52 @@ public class TUserSubmit {
 
 
     @Transient
-    private byte[] fileByte;
-
-    public byte[] getFileByte() {
-        return fileByte;
-    }
-
-    public void setFileByte(byte[] fileByte) {
-        this.fileByte = fileByte;
-    }
-
     /**
-     * 把files的路径存入数据库,把files写到 路径下
-     * @param files
+     * 写成map主要是为了删除文件方便
      */
-//    @Transient
-//    String NAMEINSQL = "";
+    private HashMap<String,MultipartFile> fileMap = new HashMap<>();
 
-    public void setFileByte(List<MultipartFile> files,String fileNameTop,int userId) throws IOException {
-        FileWithByte fwb = new FileWithByte();
-        for(int i=0;i<files.size();i++) {
-            String filePath = System.getProperty("user.dir") + STATIC_RESOURCE + "/" + userId;
-            String fileName = fileNameTop +"&&" + files.get(i).getOriginalFilename() ;
-            fwb.getFile(files.get(i).getBytes(),filePath,fileName);
+    public void setFileMap(HashMap<String, MultipartFile> fileMap) {
+        this.fileMap = fileMap;
+    }
+
+    public HashMap<String, MultipartFile> getFileMap() {
+        return fileMap;
+    }
+
+    public void setFileMap(String fileName,MultipartFile file) throws IOException {
+        System.out.println("setFileMap=====>" + fileName);
+        System.out.println("setFileMap=====>" + file.getBytes().toString());
+        this.fileMap.put(fileName,file);
+        if(this.file == null){
+            this.file = fileName + "####";
+        }
+        else{
             this.file += fileName + "####";
         }
-        System.out.println("name in sql");
-        System.out.println(this.file);
-//        this.file = NAMEINSQL;
     }
 
-    public void deleteName(String mark,String fileName){
-        this.file = this.file.replace(mark + "&&"+ fileName + "####","");
-        System.out.println("deleteName():  name in sql");
+    public void removeFileName(String fileName){
+        System.out.println("removeFileName =====> " + fileName + "\n" + this.file);
+        this.file = this.file.replace(fileName + "####","");
         System.out.println(this.file);
-//        this.file = NAMEINSQL;
     }
+
+    public void writeFile() throws IOException {
+        FileWithByte fwb = new FileWithByte();
+        String filePath = System.getProperty("user.dir") + STATIC_RESOURCE + "/" + this.getUserid().toString();
+        System.out.println("writeFile=====>" + filePath);
+        for(Map.Entry<String,MultipartFile> entry : this.fileMap.entrySet() ){
+            String fileName = entry.getKey();
+            System.out.println("writeFile=====>" + fileName);
+            System.out.println("writeFile=====>" + this.fileMap.get(fileName).getBytes().toString());
+            fwb.getFile(this.fileMap.get(fileName).getBytes(),filePath,fileName);
+        }
+        System.out.println("writeFile=====>" + this.file);
+    }
+
+
+
     /**
      * @return id
      */
