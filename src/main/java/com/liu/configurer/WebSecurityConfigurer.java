@@ -35,6 +35,7 @@ public class WebSecurityConfigurer extends WebMvcConfigurerAdapter {
         addInterceptor.excludePathPatterns("/login");
         addInterceptor.excludePathPatterns("/node/**");
         addInterceptor.excludePathPatterns("/userSubmit/**");
+        addInterceptor.excludePathPatterns("/studentEdit/**");
         addInterceptor.excludePathPatterns("/images/**");
 
         addInterceptor.excludePathPatterns("/**");

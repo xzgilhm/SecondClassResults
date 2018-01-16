@@ -52,21 +52,34 @@ public class TUserSubmit {
     private String file;
 
 
-    @Transient
-    /**
-     * 写成map主要是为了删除文件方便
-     */
-    private HashMap<String,MultipartFile> fileMap = new HashMap<>();
 
-    public void setFileMap(HashMap<String, MultipartFile> fileMap) {
-        this.fileMap = fileMap;
+    /**
+     * 是否会被删除
+     */
+    @Transient
+    private Boolean isDelete = false;
+
+    public Boolean getDelete() {
+        return isDelete;
     }
+
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
+    }
+
+
+    /**
+     * 记录提交文件时的信息
+     */
+    @Transient
+    private HashMap<String,MultipartFile> fileMap = new HashMap<>();
 
     public HashMap<String, MultipartFile> getFileMap() {
         return fileMap;
     }
 
     public void setFileMap(String fileName,MultipartFile file) throws IOException {
+        System.out.println("setFileMap=====>" + this.file);
         System.out.println("setFileMap=====>" + fileName);
         System.out.println("setFileMap=====>" + file.getBytes().toString());
         this.fileMap.put(fileName,file);
@@ -78,24 +91,34 @@ public class TUserSubmit {
         }
     }
 
+    public void writeFile() throws IOException {
+        FileWithByte fwb = new FileWithByte();
+        String filePath = System.getProperty("user.dir") + STATIC_RESOURCE + "/" + this.getUserid().toString();
+        System.out.println("writeFile=====>" + filePath);
+        if(fileMap != null){
+            for(Map.Entry<String,MultipartFile> entry : this.fileMap.entrySet() ){
+                String fileName = entry.getKey();
+                System.out.println("writeFile=====>" + fileName);
+                System.out.println("writeFile=====>" + this.fileMap.get(fileName).getBytes().toString());
+                fwb.getFile(this.fileMap.get(fileName).getBytes(),filePath,fileName);
+            }
+        }
+
+        System.out.println("writeFile=====>" + this.file);
+    }
+
+    /**
+     * 记录修改文件时的信息
+     */
+
+
     public void removeFileName(String fileName){
         System.out.println("removeFileName =====> " + fileName + "\n" + this.file);
         this.file = this.file.replace(fileName + "####","");
         System.out.println(this.file);
     }
 
-    public void writeFile() throws IOException {
-        FileWithByte fwb = new FileWithByte();
-        String filePath = System.getProperty("user.dir") + STATIC_RESOURCE + "/" + this.getUserid().toString();
-        System.out.println("writeFile=====>" + filePath);
-        for(Map.Entry<String,MultipartFile> entry : this.fileMap.entrySet() ){
-            String fileName = entry.getKey();
-            System.out.println("writeFile=====>" + fileName);
-            System.out.println("writeFile=====>" + this.fileMap.get(fileName).getBytes().toString());
-            fwb.getFile(this.fileMap.get(fileName).getBytes(),filePath,fileName);
-        }
-        System.out.println("writeFile=====>" + this.file);
-    }
+
 
 
 

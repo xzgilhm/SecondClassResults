@@ -40,7 +40,7 @@ public class UserController {
     @ResponseBody
     public Result login(@RequestBody TUser userlogin, HttpSession session)  {
         System.out.println("---------login.do ------------------");
-
+        System.out.println(userlogin.getName());
         try{
             TUser tuser = tUserService.findBy("name",userlogin.getName());
             if(tuser.getPassword().equals(userlogin.getPassword())){

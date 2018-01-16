@@ -128,11 +128,11 @@ public class UserSubmitController {
 
     /**
      *提交文件
+     *将map中的数据存入数据库并将文件写入磁盘
      */
     @GetMapping("/submit")
     public Result submit(){
         try{
-            //将map中的数据存入数据库并将文件写入磁盘
             for(Map.Entry<String,TUserSubmit> entry : map.entrySet() ){
                 TUserSubmit tus = entry.getValue();
                 tus.writeFile();
