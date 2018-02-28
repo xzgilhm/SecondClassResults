@@ -32,7 +32,7 @@ public class FileWithByte {
     /**
      * 根据byte数组，生成文件
      */
-    public void getFile(byte[] bfile, String filePath,String fileName) {
+    public void setFile(byte[] bfile, String filePath,String fileName) {
         BufferedOutputStream bos = null;
         FileOutputStream fos = null;
         File file = null;

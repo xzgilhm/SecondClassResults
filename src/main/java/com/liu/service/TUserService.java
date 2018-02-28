@@ -16,7 +16,7 @@ public interface TUserService extends Service<TUser> {
      * @param password 密码
      * @return
      */
-    JSONObject getUser(String username, String password);
+    TUser getUser(String username, String password);
 
     /**
      * 登录表单提交

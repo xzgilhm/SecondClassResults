@@ -1,7 +1,11 @@
 package com.liu.model;
 
 import com.liu.core.FileWithByte;
+import com.liu.web.UserSubmitController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.persistence.*;
 import java.io.IOException;
@@ -13,6 +17,7 @@ import static com.liu.core.ProjectConstant.STATIC_RESOURCE;
 
 @Table(name = "t_user_submit")
 public class TUserSubmit {
+    private static final Logger logger = LoggerFactory.getLogger(TUserSubmit.class);
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -79,9 +84,9 @@ public class TUserSubmit {
     }
 
     public void setFileMap(String fileName,MultipartFile file) throws IOException {
-        System.out.println("setFileMap=====>" + this.file);
-        System.out.println("setFileMap=====>" + fileName);
-        System.out.println("setFileMap=====>" + file.getBytes().toString());
+        logger.info("setFileMap=====>" + this.file);
+        logger.info("setFileMap=====>" + fileName);
+        logger.info("setFileMap=====>" + file.getBytes().toString());
         this.fileMap.put(fileName,file);
         if(this.file == null){
             this.file = fileName + "####";
@@ -94,33 +99,42 @@ public class TUserSubmit {
     public void writeFile() throws IOException {
         FileWithByte fwb = new FileWithByte();
         String filePath = System.getProperty("user.dir") + STATIC_RESOURCE + "/" + this.getUserid().toString();
-        System.out.println("writeFile=====>" + filePath);
+        logger.info("writeFile=====>" + filePath);
         if(fileMap != null){
             for(Map.Entry<String,MultipartFile> entry : this.fileMap.entrySet() ){
                 String fileName = entry.getKey();
-                System.out.println("writeFile=====>" + fileName);
-                System.out.println("writeFile=====>" + this.fileMap.get(fileName).getBytes().toString());
-                fwb.getFile(this.fileMap.get(fileName).getBytes(),filePath,fileName);
+                logger.info("writeFile=====>" + fileName);
+                logger.info("writeFile=====>" + this.fileMap.get(fileName).getBytes().toString());
+                fwb.setFile(this.fileMap.get(fileName).getBytes(),filePath,fileName);
             }
         }
 
-        System.out.println("writeFile=====>" + this.file);
+        logger.info("writeFile=====>" + this.file);
     }
 
     /**
      * 记录修改文件时的信息
      */
-
-
     public void removeFileName(String fileName){
-        System.out.println("removeFileName =====> " + fileName + "\n" + this.file);
+        logger.info("removeFileName =====> " + fileName + "\n" + this.file);
         this.file = this.file.replace(fileName + "####","");
-        System.out.println(this.file);
+        logger.info(this.file);
     }
 
 
+    public TUserSubmit(MultipartHttpServletRequest params){
+        this.userid = Integer.parseInt(params.getParameter("userId"));
+        this.roleid = Integer.parseInt(params.getParameter("roleId"));
+        this.moduleid = params.getParameter("moduleId");
+        this.typeid = params.getParameter("typeId");
+        this.standardid = Integer.parseInt(params.getParameter("standardId"));
+        this.creditid = Integer.parseInt(params.getParameter("creditId"));
+        this.evidenceid = Integer.parseInt(params.getParameter("evidenceId"));
+    }
 
+    public TUserSubmit(){
 
+    }
 
     /**
      * @return id

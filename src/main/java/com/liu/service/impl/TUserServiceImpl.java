@@ -35,7 +35,7 @@ public class TUserServiceImpl extends AbstractService<TUser> implements TUserSer
      * @return
      */
     @Override
-    public JSONObject getUser(String username, String password) {
+    public TUser getUser(String username, String password) {
         return tUserMapper.getUser(username, password);
     }
 
@@ -54,6 +54,11 @@ public class TUserServiceImpl extends AbstractService<TUser> implements TUserSer
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
             currentUser.login(token);
+
+            Result r = new Result();
+            r.setData(this.getUser(username,password));
+            System.out.println("xxxxxxxxxxxxxxxxxxx" + "\n" + r.toString());
+
             return ResultGenerator.genSuccessResult(this.getUser(username,password));
         } catch (AuthenticationException e) {
             return ResultGenerator.genFailResult("fail");

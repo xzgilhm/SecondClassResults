@@ -96,7 +96,7 @@ public class StudentEditController {
     }
 
     /**
-     * C删除某个文件
+     * 删除某个文件
      * @param reqMap
      */
     @PostMapping("/deleteFile")

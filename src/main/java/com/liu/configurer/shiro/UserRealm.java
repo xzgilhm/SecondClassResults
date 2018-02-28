@@ -1,6 +1,7 @@
 package com.liu.configurer.shiro;
 
 import com.alibaba.fastjson.JSONObject;
+import com.liu.model.TUser;
 import com.liu.service.TUserService;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -47,25 +48,27 @@ public class UserRealm extends AuthorizingRealm {
         // 获取用户名和密码
         String loginName = (String) authcToken.getPrincipal();
         String password = new String((char[]) authcToken.getCredentials());
-        logger.info("loginName and password  ===> " + loginName + "\n" + password);
+//        logger.info("loginName and password  ===> " + loginName + "\n" + password);
         UsernamePasswordToken token = (UsernamePasswordToken)authcToken;
         logger.info("验证当前Subject时获取到token为" + ReflectionToStringBuilder.toString(token, ToStringStyle.MULTI_LINE_STYLE));
         //取得当前账号和密码得到的user
-        JSONObject user = loginService.getUser(loginName, password);
-        logger.info("user value ===> " + user.toJSONString());
+//        JSONObject user = loginService.getUser(loginName, password);
+        logger.info("loginName and password  ===> " + loginName + "\n" + password);
+        TUser user = loginService.getUser(loginName, password);
+        logger.info("user value ===> " + "user.toJSONString()" + user.getName());
         if (user == null) {
             //没找到帐号
             throw new UnknownAccountException();
         }
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                user.getString("name"),
-                user.getString("password"),
+                user.getName(),
+                user.getPassword(),
                 //ByteSource.Util.bytes("salt"), salt=username+salt,采用明文访问时，不需要此句
                 getName()
         );
         //session中不需要保存密码
-        user.remove("password");
+        user.setPassword("");
         //将用户信息放入session中
 //        SecurityUtils.getSubject().getSession().setAttribute(Constants.SESSION_USER_INFO, user);
         SecurityUtils.getSubject().getSession().setAttribute("userInfo", user);

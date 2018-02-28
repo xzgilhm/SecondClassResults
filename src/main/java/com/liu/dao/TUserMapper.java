@@ -6,5 +6,5 @@ import com.liu.model.TUser;
 import org.apache.ibatis.annotations.Param;
 
 public interface TUserMapper extends Mapper<TUser> {
-    JSONObject getUser(@Param("username") String username,@Param("password") String password);
+    TUser getUser(@Param("username") String username,@Param("password") String password);
 }

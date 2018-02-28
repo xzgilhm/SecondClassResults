@@ -19,7 +19,7 @@
     where name = #{name,jdbcType=VARCHAR}
   </select>
 
-  <select id="getUser" resultType="com.alibaba.fastjson.JSONObject">
+  <select id="getUser" resultMap="BaseResultMap">
     SELECT
     *
     FROM
