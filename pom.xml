@@ -45,17 +45,34 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!--Thymleaf模板引擎依赖-->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>1.4.0</version>
 		</dependency>
-		<!--非严格模式解析HTML5-->
-		<dependency>
-			<groupId>net.sourceforge.nekohtml</groupId>
-			<artifactId>nekohtml</artifactId>
-			<version>1.9.22</version>
-		</dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.crazycake/shiro-redis -->
+        <dependency>
+            <groupId>org.crazycake</groupId>
+            <artifactId>shiro-redis</artifactId>
+            <version>2.4.2-RELEASE</version>
+        </dependency>
+
+
+
+
+
+        <!--Thymleaf模板引擎依赖-->
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.boot</groupId>-->
+			<!--<artifactId>spring-boot-starter-thymeleaf</artifactId>-->
+		<!--</dependency>-->
+		<!--&lt;!&ndash;非严格模式解析HTML5&ndash;&gt;-->
+		<!--<dependency>-->
+			<!--<groupId>net.sourceforge.nekohtml</groupId>-->
+			<!--<artifactId>nekohtml</artifactId>-->
+			<!--<version>1.9.22</version>-->
+		<!--</dependency>-->
 
 		<!--常用库依赖-->
 		<dependency>
@@ -128,6 +145,7 @@
 			<version>1.3.5</version>
 			<scope>test</scope>
 		</dependency>
+
 
 	</dependencies>
 

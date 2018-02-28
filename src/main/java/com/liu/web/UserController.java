@@ -1,6 +1,7 @@
 package com.liu.web;
 
-import com.liu.configurer.WebSecurityConfigurer;
+import com.alibaba.fastjson.JSONObject;
+//import com.liu.configurer.WebSecurityConfigurer;
 import com.liu.core.Result;
 import com.liu.core.ResultGenerator;
 import com.liu.model.TUser;
@@ -38,37 +39,44 @@ public class UserController {
     //登陆,并记录session
     @PostMapping(value = "/login")
     @ResponseBody
-    public Result login(@RequestBody TUser userlogin, HttpSession session)  {
+    public Result login(@RequestBody TUser userlogin)  {
         System.out.println("---------login.do ------------------");
-        System.out.println(userlogin.getName());
-        try{
-            TUser tuser = tUserService.findBy("name",userlogin.getName());
-            if(tuser.getPassword().equals(userlogin.getPassword())){
-                // 设置session
-                session.setAttribute(WebSecurityConfigurer.SESSION_KEY, tuser.getName());
-                System.out.println("---session--"+session.getAttribute(WebSecurityConfigurer.SESSION_KEY)+"\n");
-                return ResultGenerator.genSuccessResult(tuser);
-            }
-            else {
-                return ResultGenerator.genFailResult("用户名或者密码不正确");
-            }
-        } catch (NullPointerException e){
-            return ResultGenerator.genFailResult("用户名不存在");
-        }
+//        System.out.println(userlogin.getName());
+//        try{
+//            TUser tuser = tUserService.findBy("name",userlogin.getName());
+//            if(tuser.getPassword().equals(userlogin.getPassword())){
+//                // 设置session
+//                session.setAttribute(WebSecurityConfigurer.SESSION_KEY, tuser.getName());
+//                System.out.println("---session--"+session.getAttribute(WebSecurityConfigurer.SESSION_KEY)+"\n");
+//                return ResultGenerator.genSuccessResult(tuser);
+//            }
+//            else {
+//                return ResultGenerator.genFailResult("用户名或者密码不正确");
+//            }
+//        } catch (NullPointerException e){
+//            return ResultGenerator.genFailResult("用户名不存在");
+//        }
+        return tUserService.authLogin(userlogin);
     }
 
-    //移除session
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.removeAttribute(WebSecurityConfigurer.SESSION_KEY);
-        return "redirect:/login";
+    @GetMapping(value = "/getInfo")
+    @ResponseBody
+    public Result getInfo(){
+        System.out.printf("/getInfo");
+        return ResultGenerator.genSuccessResult();
     }
-
-
-    //转向学生
-    @GetMapping(value = "/student")
-    public String student(@SessionAttribute(WebSecurityConfigurer.SESSION_KEY) String account,Model model){
-        model.addAttribute("username",account);
-        return "student/application";
-    }
+//    //移除session
+//    @GetMapping("/logout")
+//    public String logout(HttpSession session) {
+//        session.removeAttribute(WebSecurityConfigurer.SESSION_KEY);
+//        return "redirect:/login";
+//    }
+//
+//
+//    //转向学生
+//    @GetMapping(value = "/student")
+//    public String student(@SessionAttribute(WebSecurityConfigurer.SESSION_KEY) String account,Model model){
+//        model.addAttribute("username",account);
+//        return "student/application";
+//    }
 }

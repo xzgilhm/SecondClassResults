@@ -14,4 +14,13 @@ public final class ProjectConstant {
     public static final String CONTROLLER_PACKAGE = BASE_PACKAGE + ".web";//Controller所在包
 
     public static final String MAPPER_INTERFACE_REFERENCE = BASE_PACKAGE + ".core.Mapper";//Mapper插件基础接口的完全限定名
+
+    public static final String SUCCESS_CODE = "100";
+    public static final String SUCCESS_MSG = "请求成功";
+
+    /**
+     * session中存放用户信息的key值
+     */
+    public static final String SESSION_USER_INFO = "userInfo";
+    public static final String SESSION_USER_PERMISSION = "userPermission";
 }

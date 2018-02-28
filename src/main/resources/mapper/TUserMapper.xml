@@ -19,4 +19,13 @@
     where name = #{name,jdbcType=VARCHAR}
   </select>
 
+  <select id="getUser" resultType="com.alibaba.fastjson.JSONObject">
+    SELECT
+    *
+    FROM
+    t_user
+    WHERE name = #{username}
+    AND password = #{password}
+  </select>
+
 </mapper>

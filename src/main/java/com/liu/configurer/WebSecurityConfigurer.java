@@ -20,48 +20,48 @@ public class WebSecurityConfigurer extends WebMvcConfigurerAdapter {
     /**
      * 登录session key
      */
-    public final static String SESSION_KEY = "username";
-
-    @Bean
-    public SecurityInterceptor getSecurityInterceptor() {
-        return new SecurityInterceptor();
-    }
-
-    public void addInterceptors(InterceptorRegistry registry) {
-        InterceptorRegistration addInterceptor = registry.addInterceptor(getSecurityInterceptor());
-
-        // 排除配置
-        addInterceptor.excludePathPatterns("/error");
-        addInterceptor.excludePathPatterns("/login");
-        addInterceptor.excludePathPatterns("/node/**");
-        addInterceptor.excludePathPatterns("/userSubmit/**");
-        addInterceptor.excludePathPatterns("/studentEdit/**");
-        addInterceptor.excludePathPatterns("/images/**");
-
-        addInterceptor.excludePathPatterns("/**");
-        // 拦截配置
-        addInterceptor.addPathPatterns("/**");
-    }
-
-
-    private class SecurityInterceptor extends HandlerInterceptorAdapter {
-
-        @Override
-        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-                throws Exception {
-            //登陆不做拦截
-            if(request.getRequestURI().equals("/login")){
-                return true;
-            }
-            HttpSession session = request.getSession();
-            if (session.getAttribute(SESSION_KEY) != null){
-                return true;
-            }
-            // 跳转登录
-            String url = "login";
-            response.sendRedirect(url);
-            return false;
-        }
-
-    }
+//    public final static String SESSION_KEY = "username";
+//
+//    @Bean
+//    public SecurityInterceptor getSecurityInterceptor() {
+//        return new SecurityInterceptor();
+//    }
+//
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        InterceptorRegistration addInterceptor = registry.addInterceptor(getSecurityInterceptor());
+//
+//        // 排除配置
+//        addInterceptor.excludePathPatterns("/error");
+//        addInterceptor.excludePathPatterns("/login");
+//        addInterceptor.excludePathPatterns("/node/**");
+//        addInterceptor.excludePathPatterns("/userSubmit/**");
+//        addInterceptor.excludePathPatterns("/studentEdit/**");
+//        addInterceptor.excludePathPatterns("/images/**");
+//
+//        addInterceptor.excludePathPatterns("/**");
+//        // 拦截配置
+//        addInterceptor.addPathPatterns("/**");
+//    }
+//
+//
+//    private class SecurityInterceptor extends HandlerInterceptorAdapter {
+//
+//        @Override
+//        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+//                throws Exception {
+//            //登陆不做拦截
+//            if(request.getRequestURI().equals("/login")){
+//                return true;
+//            }
+//            HttpSession session = request.getSession();
+//            if (session.getAttribute(SESSION_KEY) != null){
+//                return true;
+//            }
+//            // 跳转登录
+//            String url = "login";
+//            response.sendRedirect(url);
+//            return false;
+//        }
+//
+//    }
 }
