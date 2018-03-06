@@ -32,7 +32,9 @@ import static com.liu.core.ProjectConstant.STATIC_RESOURCE;
 @RestController
 @RequestMapping("/userSubmit")
 public class UserSubmitController {
+
     private static final Logger logger = LoggerFactory.getLogger(UserSubmitController.class);
+
     @Resource
     private TUserSubmitService tUserSubmitService;
 
@@ -65,7 +67,7 @@ public class UserSubmitController {
             if(map.get(mark) != null){
 
                 for(MultipartFile file : files){
-                    logger.info("已有数据===========>" );
+                    logger.info("已有数据===========" );
 
                     map.get(mark).setFileMap(file.getOriginalFilename(),file);
 
@@ -75,7 +77,7 @@ public class UserSubmitController {
                 }
             }
             else{
-                logger.info("file===========>" + files.get(0).getOriginalFilename());
+                logger.info("暂无数据===========");
                 for(MultipartFile file : files){
                     tus.setFileMap(file.getOriginalFilename(),file);
 
@@ -117,6 +119,7 @@ public class UserSubmitController {
     public void changeFileList(@RequestBody Map<String,String> reqMap) {
         String mark = reqMap.get("mark").toString();
         String fileName = reqMap.get("fileName").toString();
+
         logger.info("删除文件对应数据 mark:" + mark + "\n"+ "filename:" + fileName);
         //删除改文件名对应的file
         map.get(mark).getFileMap().remove(fileName);

@@ -12,7 +12,7 @@ import java.util.List;
 public interface CustomService {
     //学生  用moduleId查询自定义model
     List<CustomModel> findByModuleId(String moduleId);
-    List<StandardWithCredit> findStardByMuduleIdAndTypeId(String moduleId, String typeId);
+//    List<StandardWithCredit> findStardByMuduleIdAndTypeId(String moduleId, String typeId);
     //学生  修改时查询module  多表查询
     List<TModule> findSubmitModuleByUserId(String userId);
 

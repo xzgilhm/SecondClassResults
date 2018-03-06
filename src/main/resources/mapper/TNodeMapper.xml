@@ -12,4 +12,16 @@
     <result column="creditid" jdbcType="INTEGER" property="creditid" />
     <result column="evidenceid" jdbcType="INTEGER" property="evidenceid" />
   </resultMap>
+
+  <resultMap id="standardMapList" type="java.util.HashMap">
+
+  </resultMap>
+
+
+  <select id="getStandard" resultMap="standardMapList">
+    SELECT node.creditid,node.standardid,standard.title FROM t_node node,t_standard standard
+    WHERE node.typeid = #{arg1,jdbcType=VARCHAR} AND node.standardid = standard.id AND node.moduleid = #{arg0,jdbcType=VARCHAR};
+
+  </select>
+
 </mapper>

@@ -12,6 +12,7 @@ import tk.mybatis.mapper.entity.Condition;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 73559 on 2018/1/4.
@@ -70,11 +71,21 @@ public class NodeTest extends Tester {
 
     }
 
+//    @Test
+//    public void findStardByMuduleIdAndTypeId(){
+//        String moduleid = "01";
+//        String typeid = "0101";
+//        List<StandardWithCredit> ts = customService.findStardByMuduleIdAndTypeId(moduleid,typeid);
+//        Result s = new Result();
+//        s.setData(ts);
+//        System.out.println(s.toString());
+//    }
+
     @Test
-    public void findStardByMuduleIdAndTypeId(){
+    public void getStandard(){
         String moduleid = "01";
         String typeid = "0101";
-        List<StandardWithCredit> ts = customService.findStardByMuduleIdAndTypeId(moduleid,typeid);
+        List< Map<String,Object> > ts = tNodeService.getStandard(moduleid,typeid);
         Result s = new Result();
         s.setData(ts);
         System.out.println(s.toString());

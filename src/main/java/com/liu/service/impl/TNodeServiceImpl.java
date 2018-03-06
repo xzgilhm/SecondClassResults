@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -18,5 +20,9 @@ import javax.annotation.Resource;
 public class TNodeServiceImpl extends AbstractService<TNode> implements TNodeService {
     @Resource
     private TNodeMapper tNodeMapper;
+
+    public List<Map<String,Object>> getStandard(String moduleId, String typeId){
+        return tNodeMapper.getStandard(moduleId,  typeId);
+    }
 
 }

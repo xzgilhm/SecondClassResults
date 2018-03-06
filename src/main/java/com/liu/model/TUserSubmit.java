@@ -96,24 +96,27 @@ public class TUserSubmit {
         }
     }
 
+    /**
+     * 写数据到磁盘上
+     * @throws IOException
+     */
     public void writeFile() throws IOException {
         FileWithByte fwb = new FileWithByte();
+        //磁盘路径
         String filePath = System.getProperty("user.dir") + STATIC_RESOURCE + "/" + this.getUserid().toString();
         logger.info("writeFile=====>" + filePath);
         if(fileMap != null){
             for(Map.Entry<String,MultipartFile> entry : this.fileMap.entrySet() ){
                 String fileName = entry.getKey();
-                logger.info("writeFile=====>" + fileName);
-                logger.info("writeFile=====>" + this.fileMap.get(fileName).getBytes().toString());
                 fwb.setFile(this.fileMap.get(fileName).getBytes(),filePath,fileName);
             }
         }
 
-        logger.info("writeFile=====>" + this.file);
     }
 
     /**
-     * 记录修改文件时的信息
+     * 删除文件的文件名
+     * @param fileName
      */
     public void removeFileName(String fileName){
         logger.info("removeFileName =====> " + fileName + "\n" + this.file);

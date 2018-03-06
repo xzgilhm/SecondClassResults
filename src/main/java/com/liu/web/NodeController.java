@@ -3,10 +3,9 @@ package com.liu.web;
 import com.liu.core.Result;
 import com.liu.core.ResultGenerator;
 import com.liu.model.*;
-import com.liu.service.CustomService;
-import com.liu.service.TModuleService;
-import com.liu.service.TUserService;
-import com.liu.service.TUserSubmitService;
+import com.liu.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,11 +28,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/node")
 public class NodeController {
+
+    private static final Logger logger = LoggerFactory.getLogger(NodeController.class);
+
     @Resource
     private TModuleService tModuleService;
 
     @Resource
     CustomService customService;
+
+    @Resource
+    private TNodeService tNodeService;
 
 
     //获得所有module的name
@@ -81,15 +86,19 @@ public class NodeController {
     }
 
 
-    //通过moduleid和typeid获得标准以及学分
-    @GetMapping("/findStardByMuduleIdAndTypeId/{str}")
-    public Result findStardByMuduleIdAndTypeId(@PathVariable("str") String str){
-        String[] s = str.split("&");
-        String moduleId = s[0];
-        String typeId = s[1];
-        System.out.println(moduleId + " ---- " + typeId);
-        List<StandardWithCredit> ts = customService.findStardByMuduleIdAndTypeId(moduleId,typeId);
+
+    /**
+     * 通过moduleid和typeid获得标准以及学分
+     * @param moduleId
+     * @param typeId
+     * @return
+     */
+    @GetMapping("/getStandard")
+    public Result test(String moduleId, String typeId){
+        logger.info("moduleId   typeId" + moduleId + "\n" + typeId);
+        List<Map<String,Object>> ts = tNodeService.getStandard(moduleId,typeId);
         return ResultGenerator.genSuccessResult(ts);
+
     }
 
 

@@ -23,10 +23,10 @@ public class CustomServiceImpl implements CustomService{
     public List<CustomModel> findByModuleId(String moduleId) {
         return customMapper.findByModuleId(moduleId);
     }
-
-    public List<StandardWithCredit> findStardByMuduleIdAndTypeId(String moduleId, String typeId) {
-        return customMapper.findStardByMuduleIdAndTypeId(moduleId,typeId);
-    }
+//
+//    public List<StandardWithCredit> findStardByMuduleIdAndTypeId(String moduleId, String typeId) {
+//        return customMapper.findStardByMuduleIdAndTypeId(moduleId,typeId);
+//    }
 
 
     @Override
